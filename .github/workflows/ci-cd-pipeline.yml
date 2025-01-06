@@ -19,21 +19,24 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: "17"
-          distribution: "temurin"  # Use temurin as the distribution (from Adoptium)
+          distribution: "temurin"
 
-      - name: Cache Maven dependencies
+      - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          path: ~/.gradle/wrapper/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
-            ${{ runner.os }}-maven-
+            ${{ runner.os }}-gradle-
 
-      - name: Build with Maven
-        run: ./mvnw clean install -DskipTests
+      - name: Install Gradle
+        run: sudo apt-get install gradle
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test  # Build without running tests
 
       - name: Run Tests
-        run: ./mvnw test
+        run: ./gradlew test
 
       - name: Install Docker
         run: |
