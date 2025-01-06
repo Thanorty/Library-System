@@ -60,6 +60,10 @@ jobs:
           sudo docker --version
           
       - name: Run tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/library_db
+          SPRING_DATASOURCE_USERNAME: library_user
+          SPRING_DATASOURCE_PASSWORD: library_password
         run: ./gradlew test
 
   deploy:
