@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the build output (e.g., the jar file) into the container
-COPY book-borrowing-system/build/libs/book-borrowing-system*.jar app.jar
+COPY build/libs/book-borrowing-system*.jar app.jar
 
 # Expose the port the app runs on
 EXPOSE 8080
