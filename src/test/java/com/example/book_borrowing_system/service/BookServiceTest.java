@@ -1,5 +1,6 @@
 package com.example.book_borrowing_system.service;
 
+import com.example.book_borrowing_system.exception.ConflictException;
 import com.example.book_borrowing_system.model.*;
 import com.example.book_borrowing_system.repository.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +76,7 @@ public class BookServiceTest {
 
         when(bookRepository.findByIsbn("1234567890")).thenReturn(List.of(existingBook));
 
-        assertThrows(IllegalStateException.class, () ->
+        assertThrows(ConflictException.class, () ->
                 bookService.registerBook("1234567890", "Test Book", "Test Author")
         );
     }
