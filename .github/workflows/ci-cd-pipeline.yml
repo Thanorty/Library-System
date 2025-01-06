@@ -27,9 +27,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
 
-      - name: Run tests
-        run: ./gradlew test
-
       - name: Install Docker
         run: |
           sudo apt-get update
@@ -43,6 +40,14 @@ jobs:
 
       - name: Verify Docker container is running
         run: docker ps
+
+      - name: Wait for PostgreSQL to be ready (inside Docker)
+        run: |
+          docker exec postgres pg_isready -U postgres
+        continue-on-error: true
+
+      - name: Run tests
+        run: ./gradlew test
 
   deploy:
     runs-on: ubuntu-latest
