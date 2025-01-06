@@ -37,7 +37,7 @@ jobs:
 
       - name: Start PostgreSQL and Spring Boot Docker services
         run: |
-          docker-compose -f ./docker-compose.yml up -d postgres springboot-app
+          docker-compose -f ./docker-compose.yml up -d postgres app
           # Wait for the PostgreSQL and Spring Boot to be ready
           sleep 20
           
