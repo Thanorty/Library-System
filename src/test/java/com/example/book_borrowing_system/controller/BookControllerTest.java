@@ -1,5 +1,6 @@
 package com.example.book_borrowing_system.controller;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,10 +21,11 @@ class BookControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    @Transactional
     void registerBook_Success() throws Exception {
         String request = """
             {
-                "isbn": "978-3-16-148410-0",
+                "isbn": "978-3-18-148410-0",
                 "title": "Effective Java",
                 "author": "Joshua Bloch"
             }
@@ -33,16 +35,17 @@ class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.isbn").value("978-3-16-148410-0"))
+                .andExpect(jsonPath("$.isbn").value("978-3-18-148410-0"))
                 .andExpect(jsonPath("$.title").value("Effective Java"))
                 .andExpect(jsonPath("$.author").value("Joshua Bloch"));
     }
 
     @Test
+    @Transactional
     void registerBook_DuplicateISBNDifferentTitle() throws Exception {
         String request1 = """
             {
-                "isbn": "978-3-16-148410-0",
+                "isbn": "978-3-18-148410-0",
                 "title": "Effective Java",
                 "author": "Joshua Bloch"
             }
@@ -50,7 +53,7 @@ class BookControllerTest {
 
         String request2 = """
             {
-                "isbn": "978-3-16-148410-0",
+                "isbn": "978-3-18-148410-0",
                 "title": "Java Concurrency in Practice",
                 "author": "Brian Goetz"
             }
@@ -69,10 +72,11 @@ class BookControllerTest {
     }
 
     @Test
+    @Transactional
     void registerBook_MultipleCopies() throws Exception {
         String request = """
             {
-                "isbn": "978-3-16-148410-0",
+                "isbn": "978-3-18-148410-0",
                 "title": "Effective Java",
                 "author": "Joshua Bloch"
             }
