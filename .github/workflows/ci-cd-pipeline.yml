@@ -13,30 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: "17"
-          distribution: "temurin"
+          java-version: '17'
+          distribution: 'adoptopenjdk' 
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.gradle/wrapper/
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Ensure gradlew is executable
-        run: chmod +x ./gradlew  # Make sure gradlew has execute permissions
-
-      - name: Install Gradle
-        run: sudo apt-get install gradle
-
       - name: Build with Gradle
-        run: ./gradlew clean build -x test  # Build without running tests
+        run: ./gradlew clean build -x test
 
       - name: Run Tests
         run: ./gradlew test
@@ -64,6 +58,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to server
-        run: |
+        run: >
           echo "Deploying app"
-          # Add your deployment steps here (e.g., push Docker image to Docker Hub, deploy to AWS, etc.)
+
+        # Add your deployment steps here (e.g., push Docker image to Docker Hub, deploy to AWS, etc.)
