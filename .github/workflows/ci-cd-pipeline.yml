@@ -29,6 +29,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Ensure gradlew is executable
+        run: chmod +x ./gradlew  # Make sure gradlew has execute permissions
+
       - name: Install Gradle
         run: sudo apt-get install gradle
 
