@@ -28,36 +28,18 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x test
         
-      - name: Install Docker
+      - name: Install Docker and Docker Compose
         run: |
-          # Remove any existing Docker installations
-          sudo apt-get remove docker docker-engine docker.io containerd runc || true
-          sudo apt-get purge docker-ce docker-ce-cli containerd.io docker-compose-plugin || true
-          
-          # Install packages to allow apt to use a repository over HTTPS
           sudo apt-get update
-          sudo apt-get install -y \
-            ca-certificates \
-            curl \
-            gnupg
-      
-          # Add Docker's official GPG key
-          sudo install -m 0755 -d /etc/apt/keyrings
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-          sudo chmod a+r /etc/apt/keyrings/docker.gpg
-      
-          # Set up the repository
-          echo \
-            "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-            "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      
-          # Install Docker Engine
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-          
-          # Verify Docker installation
-          sudo docker --version
+          sudo apt-get install -y curl wget
+          curl -fsSL https://get.docker.com | sudo bash
+          sudo apt-get install -y docker-compose
+
+      - name: Start PostgreSQL and Spring Boot Docker services
+        run: |
+          docker-compose -f ./docker-compose.yml up -d postgres springboot-app
+          # Wait for the PostgreSQL and Spring Boot to be ready
+          sleep 20
           
       - name: Run tests
         env:
@@ -65,6 +47,9 @@ jobs:
           SPRING_DATASOURCE_USERNAME: library_user
           SPRING_DATASOURCE_PASSWORD: library_password
         run: ./gradlew test
+
+      - name: Stop and remove Docker services
+        run: docker-compose -f ./docker-compose.yml down
 
   deploy:
     runs-on: ubuntu-latest
