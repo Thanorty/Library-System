@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: "17"
-          distribution: "adoptopenjdk"  # Specify the Java distribution (adoptopenjdk, zulu, etc.)
+          distribution: "temurin"  # Use temurin as the distribution (from Adoptium)
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
