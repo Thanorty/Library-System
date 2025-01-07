@@ -1,6 +1,7 @@
 package com.example.book_borrowing_system.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ public class BookDto {
     @Data
     public static class RegisterRequest {
         @NotBlank(message = "ISBN is required")
+        @Size(max = 17, message = "ISBN must be no longer than 17 characters")
         private String isbn;
 
         @NotBlank(message = "Title is required")
