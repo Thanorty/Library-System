@@ -48,6 +48,7 @@ GET /api/borrowers/{id}
 POST /api/books
 GET /api/books
 GET /api/books?isbn={isbn}
+GET /api/books?isbn={isbn}&withBorrowHistory={boolean}
 POST /api/books/{bookId}/borrow
 POST /api/books/{bookId}/return
 ```
@@ -85,6 +86,39 @@ POST /api/books/{bookId}/return
 ```
 
 ## API Usage Examples
+
+### Get Specific Book with History
+
+```http
+GET /api/books?isbn=978-0-7475-3269-9&withBorrowHistory=true
+```
+
+Response:
+```json
+{
+  "id": "long",
+  "isbn": "string", // 978-0-7475-3269-9
+  "title": "string",
+  "author": "string",
+  "available": "boolean",
+  "borrowHistory": [
+    {
+      "borrowId": "long",
+      "borrowerId": "long",
+      "borrowerName": "string",
+      "borrowerEmail": "string",
+      "borrowDate": "datetime",
+      "returnDate": "datetime"
+    }
+  ]
+}
+```
+
+### Get Specific Book with History
+
+```http
+GET /api/books?isbn=978-0-7475-3269-9&withBorrowHistory=true
+```
 
 ### Register a New Book
 
@@ -178,7 +212,12 @@ Error Response Format:
 
 4. Build the project:
    ```bash
-   ./mvnw clean install
+   ./gradlew clean build
+   ```
+
+5. Run the application:
+   ```bash
+   ./gradlew bootRun
    ```
 
 ### Docker Setup
