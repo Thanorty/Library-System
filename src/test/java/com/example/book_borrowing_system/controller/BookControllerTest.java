@@ -22,6 +22,7 @@ class BookControllerTest {
 
     @Test
     @Transactional
+    // Tests if able to add new book successfully
     void registerBook_Success() throws Exception {
         String request = """
             {
@@ -42,6 +43,7 @@ class BookControllerTest {
 
     @Test
     @Transactional
+    // Tests if able to insert multiple book with same isbn but different author and title
     void registerBook_DuplicateISBNDifferentTitle() throws Exception {
         String request1 = """
             {
@@ -73,6 +75,7 @@ class BookControllerTest {
 
     @Test
     @Transactional
+    // Tests if can insert multiple books with same isbn, title and author
     void registerBook_MultipleCopies() throws Exception {
         String request = """
             {
