@@ -97,7 +97,7 @@ Response:
 ```json
 {
   "id": "long",
-  "isbn": "string", // 978-0-7475-3269-9
+  "isbn": "string",
   "title": "string",
   "author": "string",
   "available": "boolean",
@@ -285,8 +285,8 @@ The project uses GitHub Actions for continuous integration and deployment. The p
    - Automated deployment process (customizable based on deployment target)
 
 ### Workflow Trigger Events
-- Push to main branch
-- Pull requests to main branch
+- Push to main, dev-01 branch
+- Pull requests to main, dev-01 branch
 
 ### Environment Setup
 The CI/CD pipeline uses the following environment variables:
