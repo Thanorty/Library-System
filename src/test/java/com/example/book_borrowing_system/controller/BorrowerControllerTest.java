@@ -21,6 +21,7 @@ class BorrowerControllerTest {
 
     @Test
     @Transactional
+    // Tests if can register borrower
     void registerBorrower_Success() throws Exception {
         String request = """
         {
@@ -40,6 +41,7 @@ class BorrowerControllerTest {
 
 
     @Test
+    // Tests if able to register borrower without email
     void registerBorrower_MissingEmail() throws Exception {
         String request = """
             {
@@ -58,6 +60,7 @@ class BorrowerControllerTest {
 
     @Test
     @Transactional
+    // Tests if able to register multiple borrower with same email
     void registerBorrower_DuplicateEmail() throws Exception {
         String request = """
             {

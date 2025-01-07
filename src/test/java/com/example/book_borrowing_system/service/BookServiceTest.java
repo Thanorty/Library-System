@@ -36,6 +36,7 @@ public class BookServiceTest {
 
     @BeforeEach
     void setUp() {
+        // Creating and initializing a test Book object
         testBook = new Book();
         testBook.setId(1L);
         testBook.setIsbn("1234567890");
@@ -56,6 +57,7 @@ public class BookServiceTest {
     }
 
     @Test
+    // Tests Registering new book with unique ISBN
     void registerBook_Success() {
         when(bookRepository.findByIsbn(anyString())).thenReturn(List.of());
         when(bookRepository.save(any(Book.class))).thenReturn(testBook);
@@ -68,6 +70,7 @@ public class BookServiceTest {
     }
 
     @Test
+    // Tests if able register book with Duplicate ISBN and Different Details
     void registerBook_DuplicateISBNDifferentDetails_ThrowsException() {
         Book existingBook = new Book();
         existingBook.setIsbn("1234567890");

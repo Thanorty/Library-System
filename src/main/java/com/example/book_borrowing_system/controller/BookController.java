@@ -19,6 +19,13 @@ public class BookController {
     private final BookService bookService;
     private final BookBorrowRepository bookBorrowRepository;
 
+    /**
+     * Registers a new book in the system.
+     * Accepts book details (ISBN, title, author) in the request body and returns the registered book details.
+     *
+     * @param request Book details for registration.
+     * @return The registered book's details.
+     */
     @PostMapping
     public ResponseEntity<BookDto.Response> registerBook(
             @Valid @RequestBody BookDto.RegisterRequest request) {
@@ -30,6 +37,15 @@ public class BookController {
         return ResponseEntity.ok(convertToResponse(book));
     }
 
+
+    /**
+     * Retrieves a list of books. Optionally, a book's ISBN can be provided to fetch a specific book.
+     * Also allows fetching borrow history for each book.
+     *
+     * @param isbn ISBN of the book to fetch (optional).
+     * @param withBorrowHistory Flag indicating whether to include borrow history (optional, default is false).
+     * @return A list of books with or without borrow history.
+     */
     @GetMapping
     public ResponseEntity<List<BookDto.Response>> getBooks(
             @RequestParam(required = false) String isbn,  // Optional bookId
@@ -38,7 +54,7 @@ public class BookController {
         List<BookDto.Response> response;
 
         if (isbn != null) {
-            // If a specific book isbn is provided, returns matching books
+            // Check if a specific book isbn is provided, returns matching books
             Book book = bookService.getBookByIsbn(isbn);
             response = List.of(convertToResponse(book, withBorrowHistory));
         } else {
@@ -51,6 +67,14 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Converts a Book object into a response DTO.
+     * Optionally includes borrow history and overdue details.
+     *
+     * @param book The Book object to convert.
+     * @param withBorrowHistory Flag indicating whether to include borrow history.
+     * @return The BookDto.Response containing book details and optional borrow history.
+     */
     private BookDto.Response convertToResponse(Book book, boolean withBorrowHistory) {
         BookDto.Response response = new BookDto.Response();
         response.setId(book.getId());
@@ -88,7 +112,13 @@ public class BookController {
         return response;
     }
 
-
+    /**
+     * Allows a borrower to borrow a book by providing the book's ID and borrower's ID.
+     *
+     * @param bookId The ID of the book to borrow.
+     * @param request The borrow request containing borrower ID.
+     * @return The details of the book borrow transaction.
+     */
     @PostMapping("/{bookId}/borrow")
     public ResponseEntity<BookBorrowDto.Response> borrowBook(
             @PathVariable Long bookId,
@@ -97,6 +127,13 @@ public class BookController {
         return ResponseEntity.ok(convertToResponse(bookBorrow));
     }
 
+    /**
+     * Allows a borrower to return a borrowed book by providing the book's ID and borrower's ID.
+     *
+     * @param bookId The ID of the book being returned.
+     * @param request The borrow request containing borrower ID.
+     * @return The details of the book return transaction.
+     */
     @PostMapping("/{bookId}/return")
     public ResponseEntity<BookBorrowDto.Response> returnBook(
             @PathVariable Long bookId,
@@ -105,6 +142,12 @@ public class BookController {
         return ResponseEntity.ok(convertToResponse(bookBorrow));
     }
 
+    /**
+     * Converts a Book object into a response DTO.
+     *
+     * @param book The Book object to convert.
+     * @return The BookDto.Response containing book details.
+     */
     private BookDto.Response convertToResponse(Book book) {
         BookDto.Response response = new BookDto.Response();
         response.setId(book.getId());
@@ -115,6 +158,12 @@ public class BookController {
         return response;
     }
 
+    /**
+     * Converts a BookBorrow object into a response DTO.
+     *
+     * @param bookBorrow The BookBorrow object to convert.
+     * @return The BookBorrowDto.Response containing borrow transaction details.
+     */
     private BookBorrowDto.Response convertToResponse(BookBorrow bookBorrow) {
         BookBorrowDto.Response response = new BookBorrowDto.Response();
         response.setId(bookBorrow.getId());
