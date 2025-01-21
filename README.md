@@ -27,7 +27,7 @@ A RESTful API service for managing a library system, built with Spring Boot. Thi
 - Spring Boot
 - Spring Data JPA
 - RESTful API
-- Maven/Gradle (package manager)
+- Gradle (package manager)
 - PostgreSQL (database)
 - Docker & Docker Compose
 - GitHub Actions (CI/CD)
