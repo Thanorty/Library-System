@@ -553,4 +553,3 @@ This application follows the 12-Factor methodology:
    - Docker Compose for local development and testing
    - Isolated network for services
    - Volume persistence for database
-   - Health checks and dependency management
